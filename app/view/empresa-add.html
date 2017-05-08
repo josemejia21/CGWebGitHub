@@ -1,0 +1,349 @@
+<dashboard></dashboard>
+<div class="row">
+	<div class="col-lg-12">
+		<h1 class="page-header">{{titulo}}</h1>
+	</div>
+</div>
+
+
+<div>
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" class="active"><a href="#empresa" aria-controls="empresa" role="tab" data-toggle="tab">Datos Generales</a></li>
+		<li role="presentation"><a href="#ubigeo" aria-controls="ubigeo" role="tab" data-toggle="tab">Ubigeo</a></li>
+		<li role="presentation"><a href="#atributo" aria-controls="atributo" role="tab" data-toggle="tab">Atributos</a></li>
+	</ul>
+
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane active" id="empresa">
+			<form #formEmpresa = "ngForm" (ngSubmit)="formEmpresa.form.valid && onSubmit()" novalidate>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="col-lg-4">
+							<div class="form-group" 
+							[ngClass]="{ 'has-error': formEmpresa.submitted && !nombre.valid }">
+							<label>Nombre:</label>
+							<input type="text" #nombre="ngModel"  [(ngModel)]="empresa.NOMBRE" class="form-control"  
+							name="nombre" required/>
+							<div *ngIf="formEmpresa.submitted && !nombre.valid" class="help-block">
+								El nombre es obligatorio</div>
+							</div>
+						</div>
+
+						<div class="col-lg-4">
+							<div class="form-group" 
+							[ngClass]="{ 'has-error': formEmpresa.submitted && !numeroIdentificacion.valid }">
+							<label>Numero Identificacion:</label>
+							<input type="text" #numeroIdentificacion="ngModel"  class="form-control" 
+							[(ngModel)]="empresa.NUMERO_IDENTIFICACION" name="numeroIdentificacion" required>
+							<div *ngIf="formEmpresa.submitted && !numeroIdentificacion.valid" class="help-block">
+								El número de identificación es obligatorio</div>
+							</div>
+						</div>
+						<div class="col-lg-4">
+							<div class="form-group"
+							[ngClass]="{ 'has-error': formEmpresa.submitted && !nombreComercial.valid }">
+							<label>Nombre Comercial:</label>
+							<input type="text" #nombreComercial="ngModel"   class="form-control" 
+							[(ngModel)]="empresa.NOMBRE_COMERCIAL" name="nombreComercial" required>
+							<div *ngIf="formEmpresa.submitted && !nombreComercial.valid" class="help-block">
+								El nombre comercial es obligatorio</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="col-lg-4">
+							<div class="form-group">
+								<label>Industria Tipo</label>
+								<select  [(ngModel)]="empresa.KEY_TIPO_INDUSTRIA" 
+								[ngModelOptions]="{standalone: true}"
+								#idIndustriaTipo class="form-control" required>
+								<option [ngValue]="0">Seleccione</option>
+								<option  [ngValue]="industriaTipo.KEY" *ngFor="let industriaTipo of industriasTipo">
+									{{industriaTipo.DESCRIPCION}}
+								</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-lg-4">
+						<div class="form-group">
+							<label>Observaciones:</label>
+							<input type="text" #observaciones="ngModel" class="form-control" 
+							[(ngModel)]="empresa.OBSERVACIONES"  name="observaciones"  required>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="col-lg-4">
+						<div class="form-group">
+							<button type="submit"  class="btn btn-inline btn-primary" >
+								<span class="glyphicon glyphicon-ok"></span> Registrar
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div role="tabpanel" class="tab-pane" id="ubigeo">
+		<div class="row">
+			<div class="col-lg-10">
+			</div>
+			<div class="col-lg-2">
+				<button type="button" class="btn btn-default" 
+				data-toggle="modal" data-target="#myModalUbigeo">
+				+ Add
+			</button>
+
+			<!-- Modal -->
+			<div class="modal fade"  tabindex="-1" id="myModalUbigeo" role="dialog">
+				<div class="modal-dialog">
+
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Agregar Ubigeo</h4>
+						</div>
+						<div class="modal-body">
+ 
+                 <form #formUbigeo = "ngForm" (ngSubmit)="formUbigeo.form.valid && onAgregarUbigeo()" novalidate>
+
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="form-group">
+										<label>País</label>
+										<select class="form-control" >
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+
+
+								<div class="col-lg-12">
+									<div class="form-group"
+									  [ngClass]="{ 'has-error': formUbigeo.submitted && !idDepartamento.valid }">
+										<label>Departamento</label>
+										<select  
+										(ngModelChange) = "onChangeDepartamento($event)"
+										[(ngModel)]="ubigeoDepartamento" 
+										[ngModelOptions]="{standalone: true}"
+										#idDepartamento="ngModel" name="idDepartamento" class="form-control" required>
+										<option [ngValue]="null">Seleccione</option>
+										<option  [ngValue]="departamento" *ngFor="let departamento of lstUbigeoDepartamento">
+											{{departamento.nombre}}
+										</option>
+									</select>
+
+									<div *ngIf="formUbigeo.submitted && !idDepartamento.valid " class="help-block">
+								Debe seleccionar el departamento</div>
+							</div>
+
+								</div>
+							</div>
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="form-group"
+								    [ngClass]="{ 'has-error': formUbigeo.submitted && !idProvincia.valid }">
+									<label>Provincia</label>
+									<select  
+									(ngModelChange) = "onChangeProvincia($event)"
+									[(ngModel)]="ubigeoProvincia" 
+									[ngModelOptions]="{standalone: true}"
+									#idProvincia="ngModel" name="idProvincia" class="form-control" required>
+									<option  [ngValue]="null">Seleccione</option>
+									<option  [ngValue]="provincia" *ngFor="let provincia of lstUbigeoProvincia">
+										{{provincia.nombre}}
+									</option>
+								</select>
+									<div *ngIf="formUbigeo.submitted && !idProvincia.valid " class="help-block">
+								Debe seleccionar la provincia</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="form-group"
+							 [ngClass]="{ 'has-error': formUbigeo.submitted && !idDistrito.valid }">
+								<label>Distrito</label>
+								<select
+								[(ngModel)]="ubigeoDistrito" 
+								[ngModelOptions]="{standalone: true}"
+								#idDistrito="ngModel" name="idDistrito" class="form-control" required>
+								<option [ngValue]="null">Seleccione</option>
+								<option  [ngValue]="distrito" *ngFor="let distrito of lstUbigeoDistrito">
+									{{distrito.nombre}}
+								</option>
+							</select>
+								<div *ngIf="formUbigeo.submitted && !idDistrito.valid " class="help-block">
+								Debe seleccionar el distrito</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="form-group">
+							<label>Dirección</label>
+							<input type="text" class="form-control" 
+							[(ngModel)]="direccion"  name="direccion" required>
+						
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-5">
+						<button  
+						class="btn btn-inline btn-primary" >
+						<span class="glyphicon glyphicon-plus"></span> Agregar
+					</button >
+				</div>
+			</div>
+
+
+			</form>
+
+
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		</div>
+	</div>
+
+</div>
+</div>
+</div>
+</div>
+<div class="row">
+	<div class="col-lg-12">
+		<table class="table table-bordered table-hover" >
+			<thead>
+				<tr>
+					<th>País</th>
+					<th>Departamento</th>
+					<th>Provincia</th>
+					<th>Distrito</th>
+					<th>Dirección</th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let ubigeo of lstUbigeo">
+					<td>{{ ubigeo.NOMBRE_PAIS }}</td>
+					<td>{{ ubigeo.NOMBRE_DEPARTAMENTO }}</td>
+					<td>{{ ubigeo.NOMBRE_PROVINCIA }}</td>
+					<td>{{ ubigeo.NOMBRE }}</td>
+					<td>{{ ubigeo.DIRECCION }}</td>
+					<td><a (click)=onMostrarUbigeo(ubigeo) data-toggle="modal"
+						data-target="#myModalUbigeo" class="btn btn-info">
+						<span class="glyphicon glyphicon-edit"></span> Editar</a>
+					</td>    
+					<td><a (click)="onEliminarUbigeo(ubigeo)" class="btn btn-danger">
+						<span class="glyphicon glyphicon-trash"></span> Eliminar</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</div>
+<div role="tabpanel" class="tab-pane" id="atributo">
+
+	<div class="row">
+		<div class="col-lg-10">
+		</div>
+		<div class="col-lg-2">
+			<button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModalAtributo">+ Add</button>
+			<!-- Modal -->
+			<div class="modal fade" id="myModalAtributo" role="dialog">
+				<div class="modal-dialog">
+
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">Agregar Atributo</h4>
+						</div>
+						<div class="modal-body">
+
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="form-group">
+										<label>Tipo</label>
+										<select class="form-control" >
+										</select>
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="form-group">
+										<label>Descripción</label>
+										<input type="text" class="form-control"   >
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-lg-5">
+									<a  (click)=onAgregarAtributo() class="btn btn-inline btn-primary" 
+									data-dismiss="modal">
+									<span class="glyphicon glyphicon-plus"></span> Agregar
+								</a>
+							</div>
+						</div>
+
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-12">
+		<table class="table table-bordered table-hover" >
+			<thead>
+				<tr>
+					<th>Tipo</th>
+					<th>Descripción</th>
+					<th colspan="2"> </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let atributo of lstAtributos">
+					<td>{{ atributo.COD_TIPO }}</td>
+					<td>{{ atributo.DESCRIPCION }}</td>
+					<td><a data-toggle="modal"
+						data-target="#myModalAtributo" class="btn btn-info">
+						<span class="glyphicon glyphicon-edit"></span> Editar</a>
+					</td>    
+					<td><a  class="btn btn-danger">
+						<span class="glyphicon glyphicon-trash"></span> Eliminar</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</div>
+</div>
+</div>
+

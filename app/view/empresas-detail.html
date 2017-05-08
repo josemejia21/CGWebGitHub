@@ -1,0 +1,19 @@
+
+
+<div *ngIf="empresa" class="empresa-box">
+	
+   <h1>Empresa : {{empresa.NOMBRE}}</h1>
+   <p>
+   	<span [ngSwitch] = "empresa.NUMERO_IDENTIFICACION.trim().length" >
+         <span *ngSwitchCase = 11>RUC :{{empresa.NUMERO_IDENTIFICACION}}</span>
+         <span *ngSwitchCase = 8> DNI :{{empresa.NUMERO_IDENTIFICACION}}</span>
+      </span>
+   </p>
+
+   <p>
+    Nombre Comercial: {{empresa.NOMBRE_COMERCIAL}}
+ </p>
+</div>
+
+
+

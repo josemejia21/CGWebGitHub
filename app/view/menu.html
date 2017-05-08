@@ -1,0 +1,25 @@
+
+<header id="header">
+
+<a [routerLink]="['/dashboard']" >
+<img src="../../assets/images/angular.png" id="logo" />
+</a>
+ <h1>{{titulo}}</h1>	
+ <div class="clearfix"></div>
+</header>
+
+<nav id="nav">
+	<ul>
+		<li><a [routerLink] = "['/dashboard/lista-empresa']">Inicio</a></li> 	
+		<li><a [routerLink] = "['/dashboard/crear-empresa']">Crear empresa</a></li>
+		<li><a [routerLink]="['/']">Logout</a></li>
+	</ul>
+</nav>
+
+<section class="main">
+	<div class="clearfix"></div>
+</section>
+
+
+<!--<h1>Hi {{currentUser.NOMBRE_COMPLETO}}!</h1> -->
+
